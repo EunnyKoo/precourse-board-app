@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
 
 export default defineComponent({
   name: "PostsDetail",

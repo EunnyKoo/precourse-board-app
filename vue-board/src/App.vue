@@ -1,5 +1,5 @@
 <script>
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "@/components/comm/NavBar.vue";
 
 export default {
   name: 'App',
@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       drawer: false,
-      title: '프리코스 게시판',
+      title: '개발자들을 위한 커뮤니티 플렛폼',
       footImg: require(`@/assets/images/tan.png`),
     }
   },
@@ -21,14 +21,14 @@ export default {
 
 <template>
   <v-app>
-    <v-app-bar>
+    <v-app-bar elevation="3">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>{{title}}</v-toolbar-title>
+      <v-toolbar-title @click="this.$router.push('/')">{{title}}</v-toolbar-title>
     </v-app-bar>
 
     <NavBar v-model="drawer" @close="close"/>
 
-    <v-main class="bg-grey-lighten-2">
+    <v-main class="bg-grey-darken-3">
       <v-container fluid >
        <router-view />
       </v-container>

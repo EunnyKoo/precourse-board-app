@@ -1,18 +1,23 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import SpringBoard from "@/views/SpringBoard.vue"
-import NodeBoard from "@/views/NodeBoard.vue"
-import ReactBoard from "@/views/ReactBoard.vue"
-import SpringPosts from "@/views/SpringPosts.vue";
-import NodePosts from "@/views/NodePosts.vue";
-import ReactPosts from "@/views/ReactPosts.vue";
-import PostsNew from "@/components/PostsNew.vue";
-import PostsUpdate from "@/components/PostsUpdate.vue";
-import PostsDetail from "@/components/PostsDetail.vue";
+import SpringBoard from "@/views/board/SpringBoard.vue"
+import NodeBoard from "@/views/board/NodeBoard.vue"
+import ReactBoard from "@/views/board/ReactBoard.vue"
+import SpringPosts from "@/views/post/SpringPosts.vue";
+import NodePosts from "@/views/post/NodePosts.vue";
+import ReactPosts from "@/views/post/ReactPosts.vue";
+import PostsNew from "@/components/post/PostsNew.vue";
+import PostsUpdate from "@/components/post/PostsUpdate.vue";
+import PostsDetail from "@/components/post/PostsDetail.vue";
 import BoardTable from "@/components/BoardTable.vue";
+import BoardMain from "@/views/BoardMain.vue";
 
 const routes = [
     {
         path: '/',
+        component: BoardMain,
+    },
+    {
+        path: '/spring',
         component: SpringBoard,
         children: [
             {

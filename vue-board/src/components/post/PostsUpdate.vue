@@ -1,14 +1,16 @@
 <script>
 import {defineComponent} from 'vue'
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
+import AuthorCheck from "@/components/comm/AuthorCheck.vue";
 
 export default defineComponent({
-  name: "PostsNew",
-  components: {ConfirmDialog},
+  name: "PostsUpdate",
+  components: {AuthorCheck, ConfirmDialog},
   data() {
     return {
+      id : '',
       type: '',
-      rules: [v => v.length <= 25 || 'Max 25 characters'],
+      rules: [v => v.length <= 1500 || '최대 1500자까지 가능합니다.'],
       payload: {
         contents: '',
         title: '',
@@ -16,20 +18,34 @@ export default defineComponent({
         password: '',
       },
       dialog: false,
-      dialogText: '저장하시겠습니까?',
+      check: false,
+      dialogText: '수정하시겠습니까?',
     };
   },
   created() {
-    this.type= this.$route.meta.type
+    const type = this.$route.meta.type;
+    const id = this.$route.params.id;
+    this.type = type;
+    this.id = id;
   },
   methods: {
-    save() {
+    update() {
       this.dialog = false
-      // 저장
-      this.$router.push({name: `${this.type}Board`})
+      this.check = false
+      // 수정
+      this.$router.push({ name: `${this.type}Detail`, params: {id: this.id}})
     },
     cancel() {
       this.dialog = false
+    },
+    authorCheck(data) {
+      console.log(data);
+      this.payload.author = data?.author;
+      this.payload.password = data?.password;
+      this.dialog = true
+    },
+    authorCancel() {
+      this.check = false
     }
   }
 })
@@ -40,23 +56,6 @@ export default defineComponent({
     <v-card class="pa-5" width="auto" height="auto" rounded="xl" elevation="5">
       <v-card-item>
         <v-text-field label="Title" v-model="payload.title" variant="solo-filled"></v-text-field>
-      </v-card-item>
-      <v-card-item>
-        <v-row>
-          <v-col sm="6">
-            <v-text-field
-                label="Author"
-                v-model="payload.author"
-            ></v-text-field>
-          </v-col>
-
-          <v-col sm="6">
-            <v-text-field
-                label="password"
-                v-model="payload.password"
-            ></v-text-field>
-          </v-col>
-        </v-row>
       </v-card-item>
       <v-container fluid>
         <v-textarea
@@ -69,16 +68,16 @@ export default defineComponent({
 
       <v-card-actions style="float: right">
         <v-btn elevation="5"
-               @click="dialog = true"
+               @click="check = true"
                prepend-icon="mdi-check-circle"
         >
           <template v-slot:prepend>
             <v-icon color="success"></v-icon>
           </template>
-          저장
+          수정
         </v-btn>
         <v-btn elevation="5"
-               @click="this.$router.push({name: `${this.type}Board`})"
+               @click="this.$router.push({ name: `${this.type}Detail`, params: {id}})"
                prepend-icon="mdi-check-circle"
         >
           <template v-slot:prepend>
@@ -89,9 +88,6 @@ export default defineComponent({
       </v-card-actions>
     </v-card>
   </v-col>
-  <confirm-dialog :open="dialog" :text="dialogText" @check="save" @cancel="cancel"/>
+  <confirm-dialog :open="dialog" :text="dialogText" @check="update" @cancel="cancel"/>
+  <author-check :open="check" @check="authorCheck" @cancel="authorCancel" />
 </template>
-
-<style scoped>
-
-</style>
