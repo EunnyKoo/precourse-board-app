@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import {router} from "@/router";
+import axios from 'axios';
 
 // Vuetify
 import 'vuetify/styles'
@@ -18,4 +19,8 @@ const vuetify = createVuetify({
     directives,
 })
 
-createApp(App).use(router).use(vuetify).mount('#app')
+const app = createApp(App)
+
+app.config.globalProperties.axios = axios;
+
+app.use(router).use(vuetify).mount('#app')
