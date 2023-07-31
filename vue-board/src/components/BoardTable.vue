@@ -1,5 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
+import axios from "axios";
 
 export default defineComponent({
   name: "BoardTable",
@@ -108,9 +109,15 @@ export default defineComponent({
       return Math.ceil(this.desserts.length / this.itemsPerPage)
     },
   },
-  created() {
-    const type = this.$route.meta.type;
-    this.type = type;
+  async created() {
+    this.type = this.$route.meta.type;
+
+    await axios.get("http://localhost:8080/api/ping")
+        .then(res => {
+          console.log(res);
+        }).catch(err => {
+          alert(err)
+        })
   },
   methods: {
     clickRow(event, {item}) {
