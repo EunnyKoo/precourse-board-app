@@ -2,16 +2,12 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "PostsNew",
-  created() {
-    const type = this.$route.meta.type;
-    console.log('new',type)
-  }
+  name: "PostsLayout"
 })
 </script>
 
 <template>
-New
+  <router-view/>
 </template>
 
 <style scoped>

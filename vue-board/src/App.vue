@@ -7,7 +7,8 @@ export default {
   data() {
     return {
       drawer: false,
-      title: 'Board'
+      title: '프리코스 게시판',
+      footImg: require(`@/assets/images/tan.png`),
     }
   },
   methods: {
@@ -33,6 +34,17 @@ export default {
        <router-view />
       </v-container>
     </v-main>
+
+    <v-footer>
+      <v-row justify="center" no-gutters>
+        <v-img
+            class="mx-auto"
+            height="80"
+            max-width="100"
+            :src="footImg"
+        />
+      </v-row>
+    </v-footer>
   </v-app>
 </div>
 </template>
