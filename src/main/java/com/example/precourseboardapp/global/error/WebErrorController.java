@@ -10,8 +10,4 @@ public class WebErrorController implements ErrorController {
     public String setRedirectRoot() {
         return "index.html";
     }
-
-    public String getErrorPath() {
-        return "/error";
-    }
 }
