@@ -20,7 +20,6 @@ export default {
 </script>
 
 <template>
-<div id="app">
   <v-app>
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -49,5 +48,4 @@ export default {
         />
       </v-card>
   </v-app>
-</div>
 </template>
