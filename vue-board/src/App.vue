@@ -21,7 +21,7 @@ export default {
 
 <template>
 <div id="app">
-  <v-app id="inspire">
+  <v-app>
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{title}}</v-toolbar-title>
@@ -35,16 +35,19 @@ export default {
       </v-container>
     </v-main>
 
-    <v-footer>
-      <v-row justify="center" no-gutters>
+     <v-card
+          tile
+          width="100%"
+          height="90px"
+          class="d-flex align-center justify-center"
+      >
         <v-img
             class="mx-auto"
             height="80"
             max-width="100"
             :src="footImg"
         />
-      </v-row>
-    </v-footer>
+      </v-card>
   </v-app>
 </div>
 </template>

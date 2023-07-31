@@ -5,6 +5,7 @@ export default defineComponent({
   name: "BoardTable",
   data () {
     return {
+      type: '',
       page: 1,
       itemsPerPage: 10,
       headers: [
@@ -107,12 +108,16 @@ export default defineComponent({
       return Math.ceil(this.desserts.length / this.itemsPerPage)
     },
   },
+  created() {
+    const type = this.$route.meta.type;
+    this.type = type;
+  },
   methods: {
     clickRow(event, {item}) {
       const row = item.columns;
       const id = row.idx;
       console.log(id)
-      this.$router.push({ name: 'detail', params: {id}})
+      this.$router.push({ name: `${this.type}Detail`, params: {id}})
     }
   }
 })

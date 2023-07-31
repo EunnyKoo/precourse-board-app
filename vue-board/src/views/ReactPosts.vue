@@ -2,14 +2,10 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "PostsLayout"
+  name: "ReactPostsLayout"
 })
 </script>
 
 <template>
   <router-view/>
 </template>
-
-<style scoped>
-
-</style>
