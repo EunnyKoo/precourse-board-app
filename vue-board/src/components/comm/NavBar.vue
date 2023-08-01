@@ -40,7 +40,7 @@ export default defineComponent({
             rounded="xl"
             elevation="1"
             link
-            to="/"
+            to="/spring"
         >
           <template v-slot:prepend>
             <v-icon>mdi-bulletin-board</v-icon>

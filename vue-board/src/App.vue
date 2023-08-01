@@ -29,7 +29,7 @@ export default {
     <NavBar v-model="drawer" @close="close"/>
 
     <v-main class="bg-grey-darken-3">
-      <v-container fluid >
+      <v-container style="width: 70%">
        <router-view />
       </v-container>
     </v-main>
