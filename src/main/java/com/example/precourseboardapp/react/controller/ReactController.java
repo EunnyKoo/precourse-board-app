@@ -34,4 +34,16 @@ public class ReactController {//HTTP 요청을 받는 클래스
     public ReactResponseDto savePost(@RequestBody ReactRequestDto requestDto){
         return reactService.savePost(requestDto);
     }
+
+    //게시글 수정 : PUT
+    @PutMapping("/insert/{id}")
+    public ReactResponseDto updatePost(@PathVariable Long id, @RequestBody ReactRequestDto requestDto) {
+        return reactService.updatePost(id, requestDto);
+    }
+
+    //게시글 삭제 : DELETE
+    @DeleteMapping("/delete")
+    public void deletePost(@RequestParam Long id) {
+        reactService.deletePost(id);
+    }
 }

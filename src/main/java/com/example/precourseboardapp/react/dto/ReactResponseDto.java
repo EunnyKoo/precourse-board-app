@@ -13,6 +13,8 @@ public class ReactResponseDto extends BaseDto {
     private String contents;
     private String author;
     private String password;
+
+
     public ReactResponseDto(LocalDateTime createdAt, LocalDateTime modifiedAt, ReactBoard reactBoard) {
         super(createdAt, modifiedAt);
         this.id = reactBoard.getId();
