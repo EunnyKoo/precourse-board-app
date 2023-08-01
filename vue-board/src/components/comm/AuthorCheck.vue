@@ -61,9 +61,9 @@ export default defineComponent({
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer/>
           <v-btn
-              color="green-darken-1"
+              color="green"
               variant="text"
               elevation="3"
               @click="$emit('check', data)"
@@ -71,7 +71,7 @@ export default defineComponent({
             확인
           </v-btn>
           <v-btn
-              color="green-darken-1"
+              color="red"
               variant="text"
               elevation="3"
               @click="$emit('cancel')"

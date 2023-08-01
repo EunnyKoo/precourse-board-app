@@ -1,11 +1,12 @@
 <script>
 import {defineComponent} from 'vue'
-import axios from "axios";
+import boardService from "@/service/boardService";
 
 export default defineComponent({
   name: "BoardTable",
   data () {
     return {
+      search: '',
       type: '',
       page: 1,
       itemsPerPage: 10,
@@ -13,7 +14,7 @@ export default defineComponent({
         {
           title: 'No',
           align: 'center',
-          key: 'idx',
+          key: 'id',
           sortable: false,
         },
         {
@@ -34,74 +35,7 @@ export default defineComponent({
         },
 
       ],
-      desserts: [
-        {
-          idx: 1,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 2,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 3,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 4,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 5,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 6,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 7,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 8,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 9,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 10,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-        {
-          idx: 11,
-          title: 'title1',
-          author: 'Robbie',
-          date: '2023-01-01',
-        },
-      ],
+      desserts: [],
     }
   },
   computed: {
@@ -112,17 +46,19 @@ export default defineComponent({
   async created() {
     this.type = this.$route.meta.type;
 
-    await axios.get("http://localhost:8080/api/ping")
-        .then(res => {
-          console.log(res);
-        }).catch(err => {
+    await boardService.getTestData()
+        .then(({data}) => {
+          console.log(data)
+          this.desserts = data;
+        })
+        .catch((err) => {
           alert(err)
         })
   },
   methods: {
     clickRow(event, {item}) {
       const row = item.columns;
-      const id = row.idx;
+      const id = row.id;
       console.log(id)
       this.$router.push({ name: `${this.type}Detail`, params: {id}})
     }
@@ -131,6 +67,15 @@ export default defineComponent({
 </script>
 
 <template>
+<!--  <v-card-title>-->
+<!--    <v-text-field-->
+<!--        v-model="search"-->
+<!--        append-icon="mdi-magnify"-->
+<!--        label="Search"-->
+<!--        single-line-->
+<!--        hide-details-->
+<!--    ></v-text-field>-->
+<!--  </v-card-title>-->
   <v-data-table
       v-model:page="page"
       :headers="headers"
@@ -139,6 +84,7 @@ export default defineComponent({
       hide-default-footer
       class="elevation-1"
       @click:row="clickRow"
+      :search="search"
   >
     <template v-slot:bottom>
       <div class="text-center pt-2">
@@ -146,16 +92,16 @@ export default defineComponent({
             v-model="page"
             :length="pageCount"
         ></v-pagination>
-        <v-text-field
-            :model-value="itemsPerPage"
-            class="pa-2"
-            label="Items per page"
-            type="number"
-            min="-1"
-            max="15"
-            hide-details
-            @update:model-value="itemsPerPage = parseInt($event, 10)"
-        ></v-text-field>
+<!--        <v-text-field-->
+<!--            :model-value="itemsPerPage"-->
+<!--            class="pa-2"-->
+<!--            label="Items per page"-->
+<!--            type="number"-->
+<!--            min="-1"-->
+<!--            max="15"-->
+<!--            hide-details-->
+<!--            @update:model-value="itemsPerPage = parseInt($event, 10)"-->
+<!--        ></v-text-field>-->
       </div>
     </template>
   </v-data-table>
