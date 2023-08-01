@@ -10,11 +10,21 @@ import PostsUpdate from "@/components/post/PostsUpdate.vue";
 import PostsDetail from "@/components/post/PostsDetail.vue";
 import BoardTable from "@/components/BoardTable.vue";
 import BoardMain from "@/views/BoardMain.vue";
+import LoginForm from "@/views/auth/LoginForm.vue";
+import SignupForm from "@/views/auth/SignupForm.vue";
 
 const routes = [
     {
         path: '/',
         component: BoardMain,
+    },
+    {
+        path: '/login',
+        component: LoginForm,
+    },
+    {
+        path: '/signup',
+        component: SignupForm,
     },
     {
         path: '/spring',

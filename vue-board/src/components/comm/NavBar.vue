@@ -5,22 +5,17 @@ export default defineComponent({
   name: "NavBar",
   data() {
     return {
+      auth: false,
       openSpring: ['Spring'],
       openNode: ['Node'],
       openReact: ['React'],
-      admins: [
-        ['Management', 'mdi-account-multiple-outline'],
-        ['Settings', 'mdi-cog-outline'],
-      ],
-      icons: [
-        ['Create', 'mdi-plus-outline'],
-        ['Read', 'mdi-file-outline'],
-        ['Update', 'mdi-update'],
-        ['Delete', 'mdi-delete'],
-      ],
     };
   },
-  methods: {}
+  methods: {
+    logout() {
+      alert("LOGOUT")
+    }
+  }
 })
 </script>
 
@@ -29,7 +24,7 @@ export default defineComponent({
       location="bottom"
       temporary
   >
-    <v-list v-model:opened="openSpring">
+    <v-list v-model:opened="openSpring" color="#D2691E">
       <v-list-group value="Spring">
         <template v-slot:activator="{ props }">
           <v-list-item
@@ -64,7 +59,7 @@ export default defineComponent({
         </v-list-item>
       </v-list-group>
     </v-list>
-    <v-list v-model:opened="openNode">
+    <v-list v-model:opened="openNode" color="#D2691E">
       <v-list-group value="Node">
         <template v-slot:activator="{ props }">
           <v-list-item
@@ -99,7 +94,7 @@ export default defineComponent({
         </v-list-item>
       </v-list-group>
     </v-list>
-    <v-list v-model:opened="openReact">
+    <v-list v-model:opened="openReact" color="#D2691E">
       <v-list-group value="Node">
         <template v-slot:activator="{ props }">
           <v-list-item
@@ -134,6 +129,30 @@ export default defineComponent({
         </v-list-item>
       </v-list-group>
     </v-list>
+
+    <template v-slot:append>
+      <div class="pa-2" v-show="!auth">
+        <v-btn
+            block rounded="xl"
+            elevation="5"
+            color="brown"
+            @click="auth=!auth; this.$router.push('/login')"
+        >
+          LOGIN
+        </v-btn>
+      </div>
+      <div class="pa-2" v-show="auth">
+        <v-btn
+            block rounded="xl"
+            elevation="5"
+            color="brown"
+            @click="auth=!auth; logout"
+        >
+          LOGOUT
+        </v-btn>
+      </div>
+    </template>
+
   </v-navigation-drawer>
 </template>
 
