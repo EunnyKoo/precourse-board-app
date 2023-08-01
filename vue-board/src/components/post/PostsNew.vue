@@ -1,14 +1,22 @@
 <script>
 import {defineComponent} from 'vue'
 import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
+import SnackBar from "@/components/comm/SnackBar.vue";
+import snackBar from "@/components/comm/SnackBar.vue";
+import boardService from "@/service/boardService";
 
 export default defineComponent({
   name: "PostsNew",
-  components: {ConfirmDialog},
+  computed: {
+    snackBar() {
+      return snackBar
+    }
+  },
+  components: {SnackBar, ConfirmDialog},
   data() {
     return {
       type: '',
-      rules: [v => v.length <= 25 || 'Max 25 characters'],
+      rules: [v => v.length <= 1500 || '최대 1500자까지 가능합니다.'],
       payload: {
         contents: '',
         title: '',
@@ -17,15 +25,35 @@ export default defineComponent({
       },
       dialog: false,
       dialogText: '저장하시겠습니까?',
+      snackBarText: '',
+      snackBar: false,
     };
   },
   created() {
-    this.type= this.$route.meta.type
+    this.type = this.$route.meta.type
   },
   methods: {
-    save() {
+    async savePost() {
       this.dialog = false
-      // 저장
+
+      if (this.payload.contents.length > 1500) {
+        this.snackBarText = '내용은 최대 1500자까지 가능합니다.'
+        this.snackBar = !this.snackBar;
+        return
+      }
+
+      await boardService.savePost(JSON.stringify(this.payload), this.type)
+          .then(({data}) => {
+            if (data === 'success') {
+              this.snackBarText = '등록을 성공하셨습니다.'
+              this.snackBar = !this.snackBar;
+            }
+          })
+          .catch(err => {
+            alert(err)
+          })
+    },
+    move() {
       this.$router.push({name: `${this.type}Board`})
     },
     cancel() {
@@ -89,7 +117,8 @@ export default defineComponent({
       </v-card-actions>
     </v-card>
   </v-col>
-  <confirm-dialog :open="dialog" :text="dialogText" @check="save" @cancel="cancel"/>
+  <confirm-dialog :open="dialog" :text="dialogText" @check="savePost" @cancel="cancel"/>
+  <snack-bar :text="snackBarText" :open="snackBar" @move="move"/>
 </template>
 
 <style scoped>

@@ -2,10 +2,12 @@
 import {defineComponent} from 'vue'
 import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
 import AuthorCheck from "@/components/comm/AuthorCheck.vue";
+import SnackBar from "@/components/comm/SnackBar.vue";
+import boardService from "@/service/boardService";
 
 export default defineComponent({
   name: "PostsUpdate",
-  components: {AuthorCheck, ConfirmDialog},
+  components: {SnackBar, AuthorCheck, ConfirmDialog},
   data() {
     return {
       id : '',
@@ -20,26 +22,57 @@ export default defineComponent({
       dialog: false,
       check: false,
       dialogText: '수정하시겠습니까?',
+      snackBarText: '',
+      snackBar: false,
     };
   },
   created() {
-    const type = this.$route.meta.type;
-    const id = this.$route.params.id;
-    this.type = type;
-    this.id = id;
+    this.type = this.$route.meta.type;
+    this.id= this.$route.params.id;
+
+    this.getPost();
   },
   methods: {
-    update() {
+    async getPost() {
+      await boardService.getPost(this.id, this.type)
+          .then(({data}) => {
+            this.payload = data;
+          })
+          .catch(err => {
+            alert(err)
+          })
+    },
+    async updatePost() {
       this.dialog = false
       this.check = false
-      // 수정
+
+      if (this.payload.contents.length > 1500) {
+        this.snackBarText = '내용은 최대 1500자까지 가능합니다.'
+        this.snackBar = !this.snackBar;
+        return
+      }
+
+      await boardService.updatePost(this.id, JSON.stringify(this.payload), this.type)
+          .then(({data}) => {
+            if(data === 'success') {
+              this.snackBarText = '수정을 성공하셨습니다.'
+              this.snackBar = !this.snackBar;
+            } else {
+              this.snackBarText = '수정을 실패하셨습니다.'
+              this.snackBar = !this.snackBar;
+            }
+          })
+          .catch(err => {
+            alert(err)
+          })
+    },
+    move() {
       this.$router.push({ name: `${this.type}Detail`, params: {id: this.id}})
     },
     cancel() {
       this.dialog = false
     },
     authorCheck(data) {
-      console.log(data);
       this.payload.author = data?.author;
       this.payload.password = data?.password;
       this.dialog = true
@@ -88,6 +121,7 @@ export default defineComponent({
       </v-card-actions>
     </v-card>
   </v-col>
-  <confirm-dialog :open="dialog" :text="dialogText" @check="update" @cancel="cancel"/>
+  <confirm-dialog :open="dialog" :text="dialogText" @check="updatePost" @cancel="cancel"/>
   <author-check :open="check" @check="authorCheck" @cancel="authorCancel" />
+  <snack-bar :text="snackBarText" :open="snackBar" @move="move"/>
 </template>

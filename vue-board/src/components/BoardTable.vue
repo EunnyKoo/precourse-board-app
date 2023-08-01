@@ -46,12 +46,11 @@ export default defineComponent({
   async created() {
     this.type = this.$route.meta.type;
 
-    await boardService.getTestData()
+    await boardService.getBoard(this.type)
         .then(({data}) => {
-          console.log(data)
           this.desserts = data;
         })
-        .catch((err) => {
+        .catch(err => {
           alert(err)
         })
   },
