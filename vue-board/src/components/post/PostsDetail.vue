@@ -1,28 +1,58 @@
 <script>
 import {defineComponent} from 'vue'
 import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
+import boardService from "@/service/boardService";
+import SnackBar from "@/components/comm/SnackBar.vue";
 
 export default defineComponent({
   name: "PostsDetail",
-  components: {ConfirmDialog},
+  components: {SnackBar, ConfirmDialog},
   data() {
     return {
       id: '',
       type: '',
       dialog: false,
       dialogText: '',
+      post: {
+        title: '',
+        contents: '',
+        author: ''
+      },
+      snackBarText: '',
+      snackBar: false,
     };
   },
   created() {
-    const type = this.$route.meta.type;
-    const id = this.$route.params.id;
-    this.type = type;
-    this.id = id;
+    this.type = this.$route.meta.type;
+    this.id= this.$route.params.id;
+
+    this.getPost();
   },
   methods: {
-    delPost() {
+    async getPost() {
+      await boardService.getPost(this.id, this.type)
+          .then(({data}) => {
+            this.post = data;
+          })
+          .catch(err => {
+            alert(err)
+          })
+    },
+    async delPost() {
       this.dialog = false
-      // 삭제
+
+      await boardService.deletePost(this.id, this.type)
+          .then(({data}) => {
+            if(data === 'success') {
+              this.snackBarText = '삭제를 성공하셨습니다.'
+              this.snackBar = !this.snackBar;
+            }
+          })
+          .catch(err => {
+            alert(err)
+          })
+    },
+    move() {
       this.$router.push({name: `${this.type}Board`})
     },
     cancel() {
@@ -36,17 +66,11 @@ export default defineComponent({
   <v-col align-self="center">
     <v-card class="pa-5" width="auto" height="auto" rounded="xl" elevation="5">
       <v-card-item>
-        <v-card-title>This is Title</v-card-title>
-        <v-card-subtitle style="float: right">Robbie</v-card-subtitle>
+        <v-card-title>{{post.title}}</v-card-title>
+        <v-card-subtitle style="float: right">{{post.author}}</v-card-subtitle>
       </v-card-item>
       <v-card-text>
-        This is Contents This is Contents This is Contents This is Contents This is Contents This is Contents
-        This is Contents This is Contents This is Contents This is Contents This is Contents This is Contents
-        This is Contents This is Contents This is Contents This is Contents This is Contents This is Contents
-        This is Contents This is Contents This is Contents This is Contents This is Contents This is Contents
-        This is Contents This is Contents This is Contents This is Contents This is Contents This is Contents
-        This is Contents This is Contents This is Contents This is Contents This is Contents This is Contents
-        This is Contents This is Contents This is Contents This is Contents This is Contents This is Contents
+        {{post.contents}}
       </v-card-text>
 
       <v-card-actions style="float: right">
@@ -78,6 +102,7 @@ export default defineComponent({
     </v-card>
   </v-col>
   <confirm-dialog :open="dialog" :text="dialogText" @check="delPost" @cancel="cancel"/>
+  <snack-bar :text="snackBarText" :open="snackBar" @move="move"/>
 </template>
 
 <style scoped>
