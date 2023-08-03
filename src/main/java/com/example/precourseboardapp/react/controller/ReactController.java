@@ -23,47 +23,41 @@ public class ReactController {//HTTP 요청을 받는 클래스
 
     //게시글 목록 조회 : GET
     @GetMapping("/board")
-    public ResponseEntity<?> getPosts() {//게시글 반환 -> DB
-        if (reactService.getPosts() == null) {
-            return notFound().build();
-        }
-        return ResponseEntity.ok(reactService.getPosts());
+    public String getPosts() {//게시글 반환 -> DB
+        reactService.getPosts();
+
+        return "success";
     }
 
     //게시글 상세 조회 : GET
     @GetMapping("/board/{id}")
-    public ResponseEntity<?> getPost(@PathVariable Long id) {//게시글 반환 -> DB
-        if (id == null) {
-            return notFound().build();
-        }
-        return ResponseEntity.ok(reactService.getPost(id));
+    public String getPost(@PathVariable Long id) {//게시글 반환 -> DB
+        reactService.getPost(id);
+
+        return "success";
     }
 
     //게시글 생성 : POST
     @PostMapping("/board")
-    public ResponseEntity<?> savePost(@RequestBody ReactRequestDto requestDto){
-        if (requestDto == null) {
-            return notFound().build();
-        }
-        return ResponseEntity.ok(reactService.savePost(requestDto));
+    public String savePost(@RequestBody ReactRequestDto requestDto){
+        reactService.savePost(requestDto);
+
+        return "success";
     }
 
     //게시글 수정 : PUT
     @PutMapping("/board/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody ReactRequestDto requestDto) {
-        if (id == null) {
-            return notFound().build();
-        }
-        return ResponseEntity.ok(reactService.updatePost(id, requestDto));
+    public String updatePost(@PathVariable Long id, @RequestBody ReactRequestDto requestDto) {
+        reactService.updatePost(id, requestDto);
+
+        return "success";
     }
 
     //게시글 삭제 : DELETE
     @DeleteMapping("/board/{id}")
-    public void deletePost(@PathVariable Long id) {
-        if (id == null) {
-            notFound().build();
-        }
-        else
-            reactService.deletePost(id);
+    public String deletePost(@PathVariable Long id) {
+        reactService.deletePost(id);
+
+        return "success";
     }
 }
