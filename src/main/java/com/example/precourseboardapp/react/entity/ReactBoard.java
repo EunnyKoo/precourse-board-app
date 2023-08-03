@@ -28,7 +28,6 @@ public class ReactBoard extends Timestamped {
         this.contents = requestDto.getContents();
     }
 
-
     public void update(ReactRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.author = requestDto.getAuthor();

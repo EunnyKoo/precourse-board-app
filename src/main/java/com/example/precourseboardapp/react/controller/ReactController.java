@@ -3,12 +3,16 @@ package com.example.precourseboardapp.react.controller;
 import com.example.precourseboardapp.react.dto.ReactRequestDto;
 import com.example.precourseboardapp.react.dto.ReactResponseDto;
 import com.example.precourseboardapp.react.service.ReactService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.notFound;
+
 @RestController
-@RequestMapping("/reactBoard")
+@RequestMapping("/api/react")
 public class ReactController {//HTTP 요청을 받는 클래스
     private final ReactService reactService;
 
@@ -18,32 +22,48 @@ public class ReactController {//HTTP 요청을 받는 클래스
     }
 
     //게시글 목록 조회 : GET
-    @GetMapping("/list")
-    public List<ReactResponseDto> getPosts() {//게시글 반환 -> DB
-        return reactService.getPosts();
+    @GetMapping("/board")
+    public ResponseEntity<?> getPosts() {//게시글 반환 -> DB
+        if (reactService.getPosts() == null) {
+            return notFound().build();
+        }
+        return ResponseEntity.ok(reactService.getPosts());
     }
 
     //게시글 상세 조회 : GET
-    @GetMapping("/detail/{id}")
-    public ReactResponseDto getPost(@PathVariable Long id) {//게시글 반환 -> DB
-        return reactService.getPost(id);
+    @GetMapping("/board/{id}")
+    public ResponseEntity<?> getPost(@PathVariable Long id) {//게시글 반환 -> DB
+        if (id == null) {
+            return notFound().build();
+        }
+        return ResponseEntity.ok(reactService.getPost(id));
     }
 
     //게시글 생성 : POST
-    @PostMapping("/insert")
-    public ReactResponseDto savePost(@RequestBody ReactRequestDto requestDto){
-        return reactService.savePost(requestDto);
+    @PostMapping("/board")
+    public ResponseEntity<?> savePost(@RequestBody ReactRequestDto requestDto){
+        if (requestDto == null) {
+            return notFound().build();
+        }
+        return ResponseEntity.ok(reactService.savePost(requestDto));
     }
 
     //게시글 수정 : PUT
-    @PutMapping("/insert/{id}")
-    public ReactResponseDto updatePost(@PathVariable Long id, @RequestBody ReactRequestDto requestDto) {
-        return reactService.updatePost(id, requestDto);
+    @PutMapping("/board/{id}")
+    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody ReactRequestDto requestDto) {
+        if (id == null) {
+            return notFound().build();
+        }
+        return ResponseEntity.ok(reactService.updatePost(id, requestDto));
     }
 
     //게시글 삭제 : DELETE
-    @DeleteMapping("/delete")
-    public void deletePost(@RequestParam Long id) {
-        reactService.deletePost(id);
+    @DeleteMapping("/board/{id}")
+    public void deletePost(@PathVariable Long id) {
+        if (id == null) {
+            notFound().build();
+        }
+        else
+            reactService.deletePost(id);
     }
 }

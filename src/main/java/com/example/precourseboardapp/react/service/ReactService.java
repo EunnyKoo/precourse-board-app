@@ -5,10 +5,14 @@ import com.example.precourseboardapp.react.dto.ReactResponseDto;
 import com.example.precourseboardapp.react.entity.ReactBoard;
 import com.example.precourseboardapp.react.repository.ReactBoardRepository;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ReactService {
     private final ReactBoardRepository reactBoardRepository;
 
@@ -23,7 +27,7 @@ public class ReactService {
         List<ReactResponseDto> responseDtoList = new ArrayList<>();
         List<ReactBoard> reactBoardList = reactBoardRepository.findAll();
         for(ReactBoard reactBoard : reactBoardList){
-            ReactResponseDto responseDto = new ReactResponseDto(reactBoard.getCreatedAt(), reactBoard.getModifiedAt(), reactBoard);
+            ReactResponseDto responseDto = new ReactResponseDto(reactBoard);
             responseDtoList.add(responseDto);
         }
 
@@ -35,14 +39,14 @@ public class ReactService {
                 () -> new NullPointerException("해당 게시글 없음")
         );
         //entity -> dto
-        return new ReactResponseDto(reactBoard.getCreatedAt(), reactBoard.getModifiedAt(), reactBoard);
+        return new ReactResponseDto(reactBoard);
     }
 
     public ReactResponseDto savePost(ReactRequestDto requestDto) {
         //dto -> entity
         ReactBoard reactBoard = new ReactBoard(requestDto);
         //저장하는 내용이 담긴 entity 객체 1 -> DB의 1 row
-        return new ReactResponseDto(reactBoard.getCreatedAt(), reactBoard.getModifiedAt(), reactBoardRepository.save(reactBoard));
+        return new ReactResponseDto(reactBoardRepository.save(reactBoard));
     }
 
     @Transactional
@@ -59,7 +63,7 @@ public class ReactService {
 
         reactBoard.update(requestDto);
 
-        return new ReactResponseDto(reactBoard.getCreatedAt(), reactBoard.getModifiedAt(), reactBoard);
+        return new ReactResponseDto(reactBoard);
     }
 
     public void deletePost(Long id) {
