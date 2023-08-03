@@ -23,18 +23,14 @@ public class ReactController {//HTTP 요청을 받는 클래스
 
     //게시글 목록 조회 : GET
     @GetMapping("/board")
-    public String getPosts() {//게시글 반환 -> DB
-        reactService.getPosts();
-
-        return "success";
+    public List<ReactResponseDto> getPosts() {//게시글 반환 -> DB
+        return reactService.getPosts();
     }
 
     //게시글 상세 조회 : GET
     @GetMapping("/board/{id}")
-    public String getPost(@PathVariable Long id) {//게시글 반환 -> DB
-        reactService.getPost(id);
-
-        return "success";
+    public ReactResponseDto getPost(@PathVariable Long id) {//게시글 반환 -> DB
+        return reactService.getPost(id);
     }
 
     //게시글 생성 : POST
