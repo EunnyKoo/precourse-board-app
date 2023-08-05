@@ -5,10 +5,10 @@ import com.example.precourseboardapp.spring.entity.SpringBoard;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 public class SpringResponseDto extends BaseDto {
+
     private Long id;
     private String title;
     private String contents;
@@ -19,7 +19,7 @@ public class SpringResponseDto extends BaseDto {
         super(springBoard.getCreatedAt(), springBoard.getModifiedAt());
         this.id = springBoard.getId();
         this.title = springBoard.getTitle();
-        this.author = springBoard.getAuthor();
+        this.author = springBoard.getUser().getAuthor();
         this.contents = springBoard.getContents();
         this.date = springBoard.getModifiedAt().toLocalDate();
     }

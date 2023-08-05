@@ -1,6 +1,7 @@
 package com.example.precourseboardapp.spring.entity;
 
 
+import com.example.precourseboardapp.auth.entity.User;
 import com.example.precourseboardapp.global.entity.Timestamped;
 import com.example.precourseboardapp.spring.dto.SpringRequestDto;
 import jakarta.persistence.*;
@@ -16,22 +17,20 @@ public class SpringBoard extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String author;
-    private String password;
     @Column(length = 2000)
     private String contents;
 
-    public SpringBoard(SpringRequestDto springRequestDto) {
+    @ManyToOne
+    private User user; // user_id
+
+    public SpringBoard(SpringRequestDto springRequestDto, User user) {
         this.title = springRequestDto.getTitle();
-        this.author = springRequestDto.getAuthor();
-        this.password = springRequestDto.getPassword();
         this.contents = springRequestDto.getContents();
+        this.user = user;
     }
 
     public void update(SpringRequestDto springRequestDto) {
         this.title = springRequestDto.getTitle();
-        this.author = springRequestDto.getAuthor();
-        this.password = springRequestDto.getPassword();
         this.contents = springRequestDto.getContents();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.precourseboardapp.global.config;
 
+import com.example.precourseboardapp.auth.jwt.JwtUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -19,6 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpMethod.PATCH.name(),
                         HttpMethod.OPTIONS.name(),
                         HttpMethod.HEAD.name()
-                );
+                ).allowedHeaders("*")
+                .exposedHeaders(JwtUtil.AUTHORIZATION_HEADER);
     }
 }

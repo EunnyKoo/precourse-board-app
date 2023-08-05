@@ -1,25 +1,21 @@
 package com.example.precourseboardapp.spring.controller;
 
-import com.example.precourseboardapp.global.controller.ResponseDto;
+import com.example.precourseboardapp.auth.jwt.JwtUtil;
 import com.example.precourseboardapp.spring.dto.SpringRequestDto;
 import com.example.precourseboardapp.spring.dto.SpringResponseDto;
-import com.example.precourseboardapp.spring.entity.SpringBoard;
 import com.example.precourseboardapp.spring.service.SpringService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.notFound;
-
 @RestController
 @RequestMapping("/api/spring")
+@RequiredArgsConstructor
 public class SpringController {//http 요청 받는 클래스
+
     private final SpringService springService;
-    //초기화
-    public SpringController(SpringService springService) {
-        this.springService = springService;
-    }
 
     //게시글 목록 조회 : GET
     @GetMapping("/board")
@@ -36,22 +32,24 @@ public class SpringController {//http 요청 받는 클래스
 
     // 게시글 등록 : POST
     @PostMapping("/board")
-    public String savePost(@RequestBody SpringRequestDto requestDto) {
-        springService.savePost(requestDto);
+    public String savePost(@RequestBody SpringRequestDto requestDto,
+                           @RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String accessToken) {
+        springService.savePost(requestDto, accessToken);
         return "success";
     }
 
     // 게시글 수정 : PUT
     @PutMapping("/board/{id}")
-    public String updatePost(@PathVariable Long id, @RequestBody SpringRequestDto springRequestDto) {
-        springService.updatePost(id, springRequestDto);
+    public String updatePost(@PathVariable Long id, @RequestBody SpringRequestDto springRequestDto,
+                             @RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String accessToken) {
+        springService.updatePost(id, springRequestDto, accessToken);
         return "success";
     }
 
     // 게시글 삭제 : DELETE
     @DeleteMapping("/board/{id}")
-    public String deletePost(@PathVariable Long id) {
-        springService.deletePost(id);
+    public String deletePost(@PathVariable Long id, @RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String accessToken) {
+        springService.deletePost(id, accessToken);
         return "success";
     }
 }
