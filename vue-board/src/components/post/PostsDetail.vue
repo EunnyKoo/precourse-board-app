@@ -3,6 +3,7 @@ import {defineComponent} from 'vue'
 import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
 import boardService from "@/service/boardService";
 import SnackBar from "@/components/comm/SnackBar.vue";
+import Cookies from "js-cookie";
 
 export default defineComponent({
   name: "PostsDetail",
@@ -20,11 +21,12 @@ export default defineComponent({
       },
       snackBarText: '',
       snackBar: false,
+      isAuthor: false,
     };
   },
   created() {
     this.type = this.$route.meta.type;
-    this.id= this.$route.params.id;
+    this.id = this.$route.params.id;
 
     this.getPost();
   },
@@ -33,6 +35,9 @@ export default defineComponent({
       await boardService.getPost(this.id, this.type)
           .then(({data}) => {
             this.post = data;
+            const user = this.$store.getters['userStore/getUserInfo']
+
+            if (this.post.author === user.author) this.isAuthor = true;
           })
           .catch(err => {
             alert(err)
@@ -43,7 +48,7 @@ export default defineComponent({
 
       await boardService.deletePost(this.id, this.type)
           .then(({data}) => {
-            if(data === 'success') {
+            if (data === 'success') {
               this.snackBarText = '삭제를 성공하셨습니다.'
               this.snackBar = !this.snackBar;
             }
@@ -66,15 +71,16 @@ export default defineComponent({
   <v-col align-self="center">
     <v-card class="pa-5" width="auto" height="auto" rounded="xl" elevation="5">
       <v-card-item>
-        <v-card-title>{{post.title}}</v-card-title>
-        <v-card-subtitle style="float: right">{{post.author}}</v-card-subtitle>
+        <v-card-title>{{ post.title }}</v-card-title>
+        <v-card-subtitle style="float: right">{{ post.author }}</v-card-subtitle>
       </v-card-item>
       <v-card-text>
-        {{post.contents}}
+        {{ post.contents }}
       </v-card-text>
 
       <v-card-actions style="float: right">
-        <v-btn elevation="5"
+        <v-btn v-if="isAuthor"
+               elevation="5"
                @click="this.$router.push({name: `${this.type}Update`, params: {id}})"
                prepend-icon="mdi-check-circle"
         >
@@ -83,7 +89,8 @@ export default defineComponent({
           </template>
           수정
         </v-btn>
-        <v-btn elevation="5"
+        <v-btn v-if="isAuthor"
+               elevation="5"
                @click="dialog = true; dialogText='삭제하시겠습니까?'"
                prepend-icon="mdi-check-circle"
         >

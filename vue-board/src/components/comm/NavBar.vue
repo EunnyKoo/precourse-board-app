@@ -1,8 +1,12 @@
 <script>
 import {defineComponent} from 'vue'
+import Cookies from 'js-cookie'
 
 export default defineComponent({
   name: "NavBar",
+  props: {
+    user: '',
+  },
   data() {
     return {
       auth: false,
@@ -11,9 +15,24 @@ export default defineComponent({
       openReact: ['React'],
     };
   },
+  watch: {
+    user() {
+      // const user = this.$store.getters['userStore/getUserInfo'];
+      // this.auth = user !== null;
+
+      const token = Cookies.get('accessToken');
+      this.auth = token !== null && token !== undefined;
+    }
+
+  },
   methods: {
     logout() {
-      alert("LOGOUT")
+      Cookies.remove('accessToken', { path: '/app/' })
+      window.localStorage.removeItem('user')
+
+      this.$store.commit('userStore/setUserInfo', {})
+
+      this.$router.push('/login')
     }
   }
 })
@@ -136,7 +155,7 @@ export default defineComponent({
             block rounded="xl"
             elevation="5"
             color="brown"
-            @click="auth=!auth; this.$router.push('/login')"
+            @click="this.$router.push('/login')"
         >
           LOGIN
         </v-btn>
@@ -146,7 +165,7 @@ export default defineComponent({
             block rounded="xl"
             elevation="5"
             color="brown"
-            @click="auth=!auth; logout"
+            @click="logout"
         >
           LOGOUT
         </v-btn>

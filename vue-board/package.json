@@ -11,9 +11,12 @@
     "@mdi/font": "^7.2.96",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
+    "js-cookie": "^3.0.5",
     "vue": "^3.2.26",
     "vue-router": "^4.2.4",
-    "vuetify": "^3.3.10"
+    "vuetify": "^3.3.10",
+    "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

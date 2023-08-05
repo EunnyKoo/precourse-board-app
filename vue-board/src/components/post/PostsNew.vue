@@ -4,14 +4,10 @@ import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
 import SnackBar from "@/components/comm/SnackBar.vue";
 import snackBar from "@/components/comm/SnackBar.vue";
 import boardService from "@/service/boardService";
+import Cookies from "js-cookie";
 
 export default defineComponent({
   name: "PostsNew",
-  computed: {
-    snackBar() {
-      return snackBar
-    }
-  },
   components: {SnackBar, ConfirmDialog},
   data() {
     return {
@@ -30,6 +26,9 @@ export default defineComponent({
     };
   },
   created() {
+    const token = Cookies.get('accessToken');
+    if(token === null || token === undefined) this.$router.push('/')
+
     this.type = this.$route.meta.type
   },
   methods: {
@@ -68,23 +67,6 @@ export default defineComponent({
     <v-card class="pa-5" width="auto" height="auto" rounded="xl" elevation="5">
       <v-card-item>
         <v-text-field label="Title" v-model="payload.title" variant="solo-filled"></v-text-field>
-      </v-card-item>
-      <v-card-item>
-        <v-row>
-          <v-col sm="6">
-            <v-text-field
-                label="Author"
-                v-model="payload.author"
-            ></v-text-field>
-          </v-col>
-
-          <v-col sm="6">
-            <v-text-field
-                label="password"
-                v-model="payload.password"
-            ></v-text-field>
-          </v-col>
-        </v-row>
       </v-card-item>
       <v-container fluid>
         <v-textarea

@@ -1,5 +1,8 @@
 <script>
 import {defineComponent} from 'vue'
+import boardService from "@/service/boardService";
+import Cookies from "js-cookie";
+import {da, he} from "vuetify/locale";
 
 export default defineComponent({
   name: "LoginForm",
@@ -22,9 +25,19 @@ export default defineComponent({
     }
   },
   methods: {
-    login() {
-      alert('로그인 성공')
-      this.$router.push('/')
+    async login() {
+      await boardService.login(this.data)
+          .then(({headers, data}) => {
+            const accessToken = headers['authorization'];
+            Cookies.set('accessToken', accessToken, { path: '/app/'});
+
+            this.$store.commit('userStore/setUserInfo', data)
+            this.$router.push('/')
+          })
+          .catch(err => {
+            alert(err)
+            this.$router.push('/')
+          })
     }
   }
 })

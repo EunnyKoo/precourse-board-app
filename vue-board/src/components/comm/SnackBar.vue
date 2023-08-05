@@ -15,7 +15,7 @@ export default defineComponent({
   },
   data() {
     return {
-      timeout: 1000,
+      timeout: 500,
       snackBar: false,
     }
   },

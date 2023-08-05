@@ -4,6 +4,7 @@ import ConfirmDialog from "@/components/comm/ConfirmDialog.vue";
 import AuthorCheck from "@/components/comm/AuthorCheck.vue";
 import SnackBar from "@/components/comm/SnackBar.vue";
 import boardService from "@/service/boardService";
+import Cookies from "js-cookie";
 
 export default defineComponent({
   name: "PostsUpdate",
@@ -27,6 +28,9 @@ export default defineComponent({
     };
   },
   created() {
+    const token = Cookies.get('accessToken');
+    if(token === null || token === undefined) this.$router.push('/')
+
     this.type = this.$route.meta.type;
     this.id= this.$route.params.id;
 
@@ -101,7 +105,7 @@ export default defineComponent({
 
       <v-card-actions style="float: right">
         <v-btn elevation="5"
-               @click="check = true"
+               @click="dialog = true"
                prepend-icon="mdi-check-circle"
         >
           <template v-slot:prepend>
@@ -122,6 +126,6 @@ export default defineComponent({
     </v-card>
   </v-col>
   <confirm-dialog :open="dialog" :text="dialogText" @check="updatePost" @cancel="cancel"/>
-  <author-check :open="check" @check="authorCheck" @cancel="authorCancel" />
-  <snack-bar :text="snackBarText" :open="snackBar" @move="move"/>
+<!--  <author-check :open="check" @check="authorCheck" @cancel="authorCancel" />-->
+  <snack-bar :text="snackBarText" :open="snackBar"  @move="move"/>
 </template>

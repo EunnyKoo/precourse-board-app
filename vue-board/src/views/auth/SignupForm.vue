@@ -1,5 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
+import boardService from "@/service/boardService";
 
 export default defineComponent({
   name: "SignupForm",
@@ -8,6 +9,8 @@ export default defineComponent({
       data: {
         author: '',
         password: '',
+        email: '',
+        phone: ''
       }
     }
   },
@@ -22,9 +25,16 @@ export default defineComponent({
     }
   },
   methods: {
-    signup() {
-      alert('회원가입 성공')
-      this.$router.push('/login')
+    async signup() {
+     await boardService.signup(this.data)
+          .then(({data}) => {
+            if(data === 'success')
+              this.$router.push('/login')
+          })
+          .catch(err => {
+            alert(err)
+            this.$router.push('/')
+          })
     }
   }
 })
@@ -49,6 +59,21 @@ export default defineComponent({
             <v-text-field
                 label="password"
                 v-model="data.password"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col sm="6">
+            <v-text-field
+                label="Email"
+                v-model="data.email"
+            ></v-text-field>
+          </v-col>
+
+          <v-col sm="6">
+            <v-text-field
+                label="Phone"
+                v-model="data.phone"
             ></v-text-field>
           </v-col>
         </v-row>
