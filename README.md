@@ -25,7 +25,13 @@
 
 1. 저장소를 클론합니다:
    ```sh
-   git clone https://github.com/your-username/개커플.git
+   git clone https://github.com/hayul93/precourse-board-app.git
+
+   OR
+
+   git clone git@github.com:hayul93/precourse-board-app.git
+
+   
 
 ## 스펙
 
