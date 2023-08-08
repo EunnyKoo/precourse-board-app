@@ -38,27 +38,27 @@
    ```sh
    cd precourse-board-app
 
-3. Frontend와 Backend 각각의 의존성을 설치합니다.
+3. Frontend와 Backend 각각의 Dependency를 설치합니다.
    # Frontend
    ```sh
-   cd frontend
+   cd vue-board
    npm install
    ```
    # Backend
    ```sh
-   cd backend
+   cd precourse-board-app
    ./gradlew build
    ```
 
 4. 개발 서버를 실행합니다.
    #Frontend
    ```sh
-   cd frontend
+   cd vue-board
    npm run serve
    ```
    #Backend
    ```sh
-   cd backend
+   cd precourse-board-app
    java -jar build/libs/your-project-name.jar
    ```
 5. 웹 브라우저에서 `http://localhost:3000`에 접속하여 개커플을 이용할 수 있습니다.
