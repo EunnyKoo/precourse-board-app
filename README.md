@@ -59,7 +59,7 @@
    Backend
    ```sh
    cd precourse-board-app
-   java -jar build/libs/your-project-name.jar
+   java -jar build/libs/precourse-board-app.jar
    ```
 5. 웹 브라우저에서 `http://localhost:3000`에 접속하여 개커플을 이용할 수 있습니다.
 
