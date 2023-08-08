@@ -38,7 +38,7 @@
    ```sh
    cd precourse-board-app
 
-3. Frontend와 Backend 각각의 Dependency를 설치합니다.   
+3. Frontend와 Backend 각각의 Dependency를 설치합니다.
    Frontend   
    ```sh
    cd vue-board
@@ -50,7 +50,7 @@
    ./gradlew build
    ```
 
-4. 개발 서버를 실행합니다.   
+4. 개발 서버를 실행합니다.
    Frontend
    ```sh
    cd vue-board
