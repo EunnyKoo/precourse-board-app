@@ -30,6 +30,7 @@
    OR
 
    git clone git@github.com:hayul93/precourse-board-app.git
+   ```
 
    
 
